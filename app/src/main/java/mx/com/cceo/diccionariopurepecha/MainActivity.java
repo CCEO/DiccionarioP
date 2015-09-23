@@ -1,12 +1,19 @@
 package mx.com.cceo.diccionariopurepecha;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import mx.com.cceo.diccionariopurepecha.fragment.FragmentSlider;
 import mx.com.cceo.diccionariopurepecha.util.AdapterWords;
 
 public class MainActivity extends Activity {
@@ -15,10 +22,13 @@ public class MainActivity extends Activity {
     private RecyclerView.LayoutManager mLayoutManager;
     private AdapterWords adapterWords;
 
+    private RelativeLayout frameContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        frameContainer = (RelativeLayout) findViewById(R.id.home_fragment);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.home_recycler_view_words);
 
@@ -33,6 +43,14 @@ public class MainActivity extends Activity {
         // specify an adapter (see also next example)
         adapterWords = new AdapterWords();
         mRecyclerView.setAdapter(adapterWords);
+
+        FragmentSlider fragment = new FragmentSlider();
+        FragmentManager fragMan = getFragmentManager();
+        FragmentTransaction fragTransaction = fragMan.beginTransaction();
+
+        fragTransaction.add(frameContainer.getId(), fragment, "fragment");
+        fragTransaction.commit();
+
     }
 
     @Override
